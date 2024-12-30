@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Direccion de Transito de Iliatenco, Guerrero | Portal Oficial</title>
+    <link rel="icon" href="img/icono.jpg">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        .image-box {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto 8%; /* Margen de 20px arriba, auto a los lados, 8% abajo */
+            border: 1px solid #ffffff;
+            overflow: hidden;
+            touch-action: pan-y; /* Permite la interacción táctil para desplazamientos horizontales */
+            position: relative; /* Necesario para alinear las imágenes */
+        }
+
+        .image-box img {
+            display: block;
+            width: 300%; /* Ajusta el ancho para poder desplazar */
+            transition: transform 0.3s ease;
+            transform-origin: center center; /* Establece el origen de la transformación en el centro */
+        }
+
+        .imagen-superior {
+            margin-bottom: 8%; /* Separación del 8% respecto a la image-box */
+        }
+
+        .imagen-medio {
+            margin-top: 8%; /* Separación del 8% respecto a la image-box */
+        }
+
+        .imagen-final {
+            margin-top: 8%; /* Separación del 8% respecto a la caja image-box */
+        }
+    </style>
+</head>
+<body>
+    <a href="https://direcciondetransitoiliatenco.gob.mx/">
+        <img src="img/imagen1.jpeg" alt="Imagen superior" style="width: 100%; max-width: 100%;" class="imagen-superior">
+    </a>
+    
+    <img src="img/imagen2.jpeg" alt="Imagen en el medio" style="width: 100%; max-width: 100%;" class="imagen-medio">
+
+    <div class="image-box" id="image-box">
+        <img src="img/imagen3.png" alt="Imagen en el mediosegundo" class="imagen-mediosegundo" id="image3">
+    </div>
+
+    <a href="https://direcciondetransitoiliatenco.gob.mx/">
+        <img src="img/imagen4.jpeg" alt="Imagen al final" style="width: 100%; max-width: 100%;" class="imagen-final">
+    </a>
+
+    <script>
+        const imageBox = document.getElementById('image-box');
+        const image = document.getElementById('image3');
+
+        let touchStartX = 0;
+        let touchMoveX = 0;
+        let touchStartTime = 0;
+        let touchStartTranslateX = 0;
+
+        imageBox.addEventListener('touchstart', (event) => {
+            touchStartX = event.touches[0].clientX;
+            touchStartTime = Date.now();
+            touchStartTranslateX = currentTranslateX();
+            image.style.transition = 'none'; // Desactiva la transición para un desplazamiento más suave
+        });
+
+        imageBox.addEventListener('touchmove', (event) => {
+            touchMoveX = event.touches[0].clientX - touchStartX;
+
+            // Calcula la nueva posición de la imagen
+            let newTranslateX = touchStartTranslateX + touchMoveX;
+
+            // Limita el desplazamiento dentro de los límites de la imagen
+            const maxTranslateX = image.clientWidth - imageBox.clientWidth;
+            newTranslateX = Math.max(-maxTranslateX, Math.min(0, newTranslateX));
+
+            // Aplica la transformación de desplazamiento
+            image.style.transform = `translateX(${newTranslateX}px)`;
+        });
+
+        imageBox.addEventListener('touchend', () => {
+            // Restaura la transición suave al soltar el dedo
+            image.style.transition = 'transform 0.3s ease';
+
+            // Calcula la velocidad del movimiento para ajustar la inercia
+            const elapsedTime = Date.now() - touchStartTime;
+            const velocity = touchMoveX / elapsedTime;
+
+            // Ajusta la velocidad máxima para una inercia rápida
+            const maxVelocity = 2.5;
+            const cappedVelocity = Math.max(-maxVelocity, Math.min(maxVelocity, velocity));
+
+            // Calcula la nueva posición final basada en la velocidad
+            let finalTranslateX = currentTranslateX() + (cappedVelocity * 200); // Ajusta el factor de inercia
+
+            // Limita la posición final dentro de los límites de la imagen
+            finalTranslateX = Math.max(-maxTranslateX, Math.min(0, finalTranslateX));
+
+            // Aplica la transformación final con transición suave
+            image.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+            image.style.transform = `translateX(${finalTranslateX}px)`;
+        });
+
+        function currentTranslateX() {
+            const transformStyle = window.getComputedStyle(image).transform;
+            const matrix = new DOMMatrixReadOnly(transformStyle !== 'none' ? transformStyle : 'matrix(1, 0, 0, 1, 0, 0)');
+            return matrix.m41;
+        }
+    </script>
+</body>
+</html>

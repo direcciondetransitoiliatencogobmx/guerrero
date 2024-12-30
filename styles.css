@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+    justify-content: space-between; /* Centra los elementos verticalmente */
+    min-height: 100vh; /* Establece la altura mínima de la ventana del navegador */
+}
+
+.imagen-superior {
+    width: 100vw; /* Ancho igual al ancho completo de la ventana */
+    max-width: none; /* Quita la restricción de ancho máximo */
+    display: block;
+    margin-bottom: 20px; /* Espacio opcional entre la imagen superior y la siguiente */
+}
+
+.imagen-medio {
+    width: 75%;
+    max-width: 500px; /* Ancho máximo para evitar que la imagen se vuelva demasiado grande */
+    display: block;
+    margin: 0 auto 20px; /* Centra horizontalmente y agrega margen superior e inferior */
+}
+
+.imagen-mediosegundo {
+    width: 95%;
+    max-width: 1200px; /* Ancho máximo para evitar que la imagen se vuelva demasiado grande */
+    display: block;
+    margin: 0 auto 20px; /* Centra horizontalmente y agrega margen superior e inferior */
+    position: relative; /* Añade posición relativa para controlar la imagen dentro de este contenedor */
+    overflow: hidden; /* Oculta partes de la imagen que se desborden */
+}
+
+.imagen-mediosegundo img {
+    display: block;
+    width: 100%; /* Asegura que la imagen ocupe todo el ancho disponible */
+    transition: transform 0.3s ease; /* Transición suave para el desplazamiento */
+}
+
+.imagen-final {
+    width: 100%;
+    max-width: 100%; /* Asegura que la imagen no se desborde en pantallas pequeñas */
+    display: block;
+    margin-top: auto; /* Empuja la imagen hacia la parte inferior */
+}
+
+.slider {
+    width: 100%; /* Ancho completo para cubrir el contenedor */
+    margin-bottom: 20px; /* Espacio opcional entre la barra deslizante y el siguiente elemento */
+}
